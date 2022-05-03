@@ -13,19 +13,11 @@ namespace ConsoleApp.Servico
         private List<Fluxo> Fluxos;
         private ConvertListChar Util = new ConvertListChar();
 
-        /// <summary>
-        ///     
-        /// </summary>
-        /// <param name="fluxos"></param>
         public ElevadorServico(List<Fluxo> fluxos)
         {
             Fluxos = fluxos;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public List<int> andarMenosUtilizado() => 
             Fluxos.GroupBy(a => a.Andar)
                 .Select(n => new { Andar = n.Key, Qtd = n.Count() })
@@ -33,10 +25,6 @@ namespace ConsoleApp.Servico
                     .Select(s => s.Andar)
                     .ToList();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public List<char> elevadorMaisFrequentado()
         {
             var retorno = Fluxos.GroupBy(a => a.Elevador)
@@ -47,10 +35,6 @@ namespace ConsoleApp.Servico
             return Util.Convert(retorno);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public List<char> periodoMaiorFluxoElevadorMaisFrequentado()
         {
             var retorno = Fluxos.GroupBy(a => new { a.Elevador, a.Turno })
@@ -63,10 +47,6 @@ namespace ConsoleApp.Servico
             return Util.Convert(retorno);
         }
 
-        /// <summary>
-        ///     
-        /// </summary>
-        /// <returns></returns>
         public List<char> elevadorMenosFrequentado()
         {
             var retorno = Fluxos.GroupBy(a => a.Elevador)
@@ -77,10 +57,6 @@ namespace ConsoleApp.Servico
             return Util.Convert(retorno);
         }
 
-        /// <summary>
-        /// /
-        /// </summary>
-        /// <returns></returns>
         public List<char> periodoMenorFluxoElevadorMenosFrequentado()
         {
             var retorno = Fluxos.GroupBy(a => new { a.Elevador, a.Turno })
@@ -94,47 +70,22 @@ namespace ConsoleApp.Servico
             return Util.Convert(retorno);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public float percentualDeUsoElevadorA() =>
             percentualDeUsoElevador("A");
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public float percentualDeUsoElevadorB() =>
             percentualDeUsoElevador("B");
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public float percentualDeUsoElevadorC() =>
             percentualDeUsoElevador("C");
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public float percentualDeUsoElevadorD() =>
             percentualDeUsoElevador("D");
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public float percentualDeUsoElevadorE() =>
             percentualDeUsoElevador("E");
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public float percentualDeUsoElevador(string elevador)
+        private float percentualDeUsoElevador(string elevador)
         {
             var elevadorA = Fluxos.Where(a => a.Elevador.Equals(elevador))
                 .GroupBy(a => a.Elevador)
@@ -151,20 +102,20 @@ namespace ConsoleApp.Servico
             return elevadorA[0];
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public List<char> periodoMaiorUtilizacaoConjuntoElevadores()
         {
-            try
-            {
-                return new List<char>();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            var retorno = Fluxos.GroupBy(a => new { a.Elevador, a.Turno })
+                .Select(g =>
+                    new {
+                        Elevador = g.Key.Elevador, 
+                        Turno = g.Key.Turno, 
+                        Utilizacao = g.Count() 
+                    })
+                .OrderByDescending(a => a.Utilizacao)
+                    .Select(s => s.Turno)
+                    .Take(1)
+                    .ToList();
+            return Util.Convert(retorno);
         }
 
     }

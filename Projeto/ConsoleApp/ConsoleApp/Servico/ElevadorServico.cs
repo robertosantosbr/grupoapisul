@@ -20,15 +20,24 @@ namespace ConsoleApp.Servico
 
         public List<int> andarMenosUtilizado() => 
             Fluxos.GroupBy(a => a.Andar)
-                .Select(n => new { Andar = n.Key, Qtd = n.Count() })
+                .Select(n => 
+                    new { 
+                        Andar = n.Key, 
+                        Qtd = n.Count() 
+                    })
                 .OrderByDescending(a => a.Qtd)
                     .Select(s => s.Andar)
                     .ToList();
 
         public List<char> elevadorMaisFrequentado()
         {
-            var retorno = Fluxos.GroupBy(a => a.Elevador)
-                .Select(n => new { Elevador = n.Key, Frenquencia = n.Count() })
+            var retorno = Fluxos
+                .GroupBy(a => a.Elevador)
+                .Select(n => 
+                    new { 
+                        Elevador = n.Key, 
+                        Frenquencia = n.Count() 
+                    })
                 .OrderBy(a => a.Frenquencia)
                     .Select(s => s.Elevador)
                     .ToList();
@@ -37,9 +46,18 @@ namespace ConsoleApp.Servico
 
         public List<char> periodoMaiorFluxoElevadorMaisFrequentado()
         {
-            var retorno = Fluxos.GroupBy(a => new { a.Elevador, a.Turno })
+            var retorno = Fluxos
+                .GroupBy(a => 
+                    new { 
+                        a.Elevador, 
+                        a.Turno 
+                    })
                 .Select(g => 
-                    new { Elevador = g.Key.Elevador, Turno = g.Key.Turno, Frenquencia = g.Count() })
+                    new { 
+                        Elevador = g.Key.Elevador, 
+                        Turno = g.Key.Turno, 
+                        Frenquencia = g.Count() 
+                    })
                 .OrderByDescending(a => a.Frenquencia)
                     .Select(s => s.Turno)
                     .Take(1)
@@ -49,8 +67,12 @@ namespace ConsoleApp.Servico
 
         public List<char> elevadorMenosFrequentado()
         {
-            var retorno = Fluxos.GroupBy(a => a.Elevador)
-                .Select(n => new { Elevador = n.Key, Frenquencia = n.Count() })
+            var retorno = Fluxos
+                .GroupBy(a => a.Elevador)
+                .Select(n => 
+                    new { Elevador = n.Key, 
+                        Frenquencia = n.Count() 
+                    })
                 .OrderByDescending(a => a.Frenquencia)
                     .Select(s => s.Elevador)
                     .ToList();
@@ -59,9 +81,14 @@ namespace ConsoleApp.Servico
 
         public List<char> periodoMenorFluxoElevadorMenosFrequentado()
         {
-            var retorno = Fluxos.GroupBy(a => new { a.Elevador, a.Turno })
+            var retorno = Fluxos
+                .GroupBy(a => new { a.Elevador, a.Turno })
                 .Select(g =>
-                    new { Elevador = g.Key.Elevador, Turno = g.Key.Turno, Frenquencia = g.Count() })
+                    new { 
+                        Elevador = g.Key.Elevador, 
+                        Turno = g.Key.Turno, 
+                        Frenquencia = g.Count() 
+                    })
                 .OrderBy(a => a.Elevador)
                 .OrderBy(a => a.Frenquencia)
                     .Select(s => s.Turno)
@@ -87,7 +114,8 @@ namespace ConsoleApp.Servico
 
         private float percentualDeUsoElevador(string elevador)
         {
-            var elevadorA = Fluxos.Where(a => a.Elevador.Equals(elevador))
+            var elevadorA = Fluxos
+                .Where(a => a.Elevador.Equals(elevador))
                 .GroupBy(a => a.Elevador)
                 .SelectMany(grp => grp.Select(row => new
                 {
@@ -104,7 +132,12 @@ namespace ConsoleApp.Servico
 
         public List<char> periodoMaiorUtilizacaoConjuntoElevadores()
         {
-            var retorno = Fluxos.GroupBy(a => new { a.Elevador, a.Turno })
+            var retorno = Fluxos
+                .GroupBy(a => 
+                    new { 
+                        a.Elevador, 
+                        a.Turno 
+                    })
                 .Select(g =>
                     new {
                         Elevador = g.Key.Elevador, 

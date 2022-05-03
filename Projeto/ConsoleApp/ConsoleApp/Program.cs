@@ -43,3 +43,7 @@ percentualElevador = servico.percentualDeUsoElevadorD();
 Console.WriteLine(@"Resposta: Percentual de uso do elevador D {0} %", percentualElevador.ToString("F"));
 percentualElevador = servico.percentualDeUsoElevadorE();
 Console.WriteLine(@"Resposta: Percentual de uso do elevador E {0} %", percentualElevador.ToString("F"));
+
+var periodoConjuntoElevadores = servico.periodoMaiorUtilizacaoConjuntoElevadores();
+Console.WriteLine(@" => PERIODO de MAIOR utilizacao do conjunto de Elevadores.");
+Console.WriteLine(@"Resposta: {0}", String.Join(" | ", periodoConjuntoElevadores));
